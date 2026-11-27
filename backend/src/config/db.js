@@ -27,6 +27,13 @@ const poolConfig = process.env.DATABASE_URL
       connectionTimeoutMillis: 10000,
     };
 
+console.log(
+  "Database configuration:",
+  process.env.DATABASE_URL
+    ? "Using Render DATABASE_URL"
+    : "Using LOCAL database fallback",
+);
+
 export const pool = new Pool(poolConfig);
 
 pool.on("error", (err) => {
