@@ -1,328 +1,172 @@
-# 🏪 Store Automation System
+# Store Automation System
 
-### A Full Stack Development Project | ABESEC Ghaziabad
-
-**Store Automation** is a web-based retail store management system designed to simplify and automate everyday store operations. It provides a centralized platform to manage inventory, products, sales, customers, suppliers, and business reports through an intuitive dashboard.
-
-The project aims to demonstrate practical Full Stack Development concepts through a functional, database-driven application with role-based authentication.
+**Institution:** ABESEC Ghaziabad  
+**Project Type:** Full Stack Development (Academic Year 2026)  
+**Developed & Maintained By:** Chirag Kumar, Dev Malik (CSE-15) — Full Stack Development Team
 
 ---
 
-## 📌 Project Overview
+## Project Description
 
-Store Automation helps store administrators manage retail operations efficiently by reducing manual work, maintaining accurate inventory records, tracking sales, and generating useful business insights.
-
-The system provides two user roles:
-
-- **Admin:** Complete access to store management and administrative features.
-- **Student:** Restricted access to operational features for demonstration purposes.
-
-## ✨ Key Features
-
-### 1. Dashboard
-- Overview of total products and inventory.
-- Total sales and revenue statistics.
-- Low-stock alerts.
-- Sales analytics and visual charts.
-- Recent transactions.
-
-### 2. Inventory Management
-- Add, update, and delete inventory records.
-- Monitor available stock.
-- Identify low-stock and out-of-stock products.
-- Search, filter, and sort inventory.
-- Automatic stock deduction after sales.
-
-### 3. Product Management
-- Manage product information.
-- Maintain product categories.
-- Track purchase and selling prices.
-- Monitor product availability.
-
-### 4. Sales & Billing
-- Create sales transactions.
-- Calculate product totals and discounts.
-- Generate invoices.
-- Maintain sales history.
-- Automatically update inventory after successful transactions.
-
-### 5. Customer Management
-- Register and manage customers.
-- Update customer information.
-- View customer purchase history.
-
-### 6. Supplier Management
-- Maintain supplier information.
-- Manage supplier contact details.
-- Track supplied products.
-
-### 7. Reports & Analytics
-- Daily, weekly, and monthly sales reports.
-- Revenue analysis.
-- Best-selling products.
-- Inventory valuation.
-- Low-stock reports.
-
-### 8. Authentication & Authorization
-- Secure login system.
-- Admin and Student roles.
-- Role-based access control.
-- Protected application routes.
-- Password hashing and secure authentication.
+**Store Automation** is a full-stack retail store management web application designed for academic demonstration and real-world store operations. It provides role-based access control (Admin and Student), live database-driven KPI dashboards, product and category management, inventory stock tracking with automatic alerts, billing and invoice generation with atomic stock deduction, customer purchase history, supplier management, user administration, and analytical reporting.
 
 ---
 
-## 🛠️ Technology Stack
+## Key Features
 
-| Technology | Purpose |
-|---|---|
-| React.js | Frontend development |
-| Vite | Development and build tool |
-| Tailwind CSS | UI styling |
-| React Router | Client-side navigation |
-| Lucide React | Icons |
-| Recharts | Data visualization |
-| Node.js | Backend runtime |
-| Express.js | REST API development |
-| PostgreSQL | Relational database |
-| JavaScript | Application programming |
-
----
-
-## 🔐 Demo Login Credentials
-
-Use the following credentials to access the application.
-
-### Admin Account
-
-| Field | Credentials |
-|---|---|
-| Username | `admin` |
-| Password | `Admin@123` |
-| Role | Administrator |
-
-### Student Account
-
-| Field | Credentials |
-|---|---|
-| Username | `student` |
-| Password | `Student@123` |
-| Role | Student |
-
-**Note:** These are demonstration credentials. Change the passwords before deploying the application publicly.
+- **Role-Based Authentication & Security**
+  - JWT authentication stored in `httpOnly` cookies with `bcryptjs` password hashing.
+  - Separate **Admin** and **Student** roles enforced at both API middleware and UI route levels.
+  - Password visibility toggle, form validation, account activation/deactivation, and self-service password updates.
+- **Database-Driven Dashboard**
+  - 6 live KPI cards: Total Products, Total Inventory, Total Sales, Total Revenue, Low Stock Products, and Total Customers.
+  - 14-day sales overview chart, 6-month revenue chart, category distribution chart, recent transactions, low-stock alerts, and recent inventory movements.
+- **Inventory & Product Management**
+  - Full CRUD for products and categories with server-side search, filtering, sorting, and pagination.
+  - Stock availability indicators (`In Stock`, `Low Stock`, `Out of Stock`), manual stock adjustments (`IN` / `OUT` / `ADJUSTMENT`), and complete `stock_movements` audit trail.
+- **Sales & Billing Management**
+  - POS-style billing workflow with customer selection, flat/percentage discounts, optional tax calculation, payment method tracking, and idempotency protection against duplicate submissions.
+  - Transactional PostgreSQL row locking (`SELECT ... FOR UPDATE`) ensures stock never goes negative and automatically deducts inventory upon sale completion.
+  - Unique sequential invoice numbers (`INV-YYYY-XXXX`), invoice search, detail modal, and clean print layout.
+- **Customer & Supplier Management**
+  - Customer directory with registration dates and individual purchase history modal.
+  - Supplier directory showing contact details and dynamically linked supplied products.
+- **Reports & Analytics**
+  - Daily, weekly, and monthly sales charts, category-wise sales breakdown, best-selling products, low-stock report, and inventory valuation (cost vs. retail value) with date filters and CSV export.
+- **User Management & Store Settings (Admin)**
+  - Create/edit accounts, assign roles, activate/deactivate users, reset passwords, and configure store details and student sales permissions.
 
 ---
 
-## 📂 Project Structure
+## Technology Stack
 
-The project follows a modular full-stack architecture.
+- **Frontend:** React 18, Vite, Tailwind CSS v4, React Router v7, Lucide React, Recharts
+- **Backend:** Node.js, Express.js, JWT (`jsonwebtoken`), `bcryptjs`, Helmet, CORS, Cookie Parser
+- **Database:** PostgreSQL (`pg` driver with relational schema, foreign keys, check constraints, and indexes)
+
+---
+
+## Project Structure
 
 ```text
-Store-Automation/
-│
-├── frontend/
-│   ├── public/
-│   ├── src/
-│   │   ├── assets/
-│   │   ├── components/
-│   │   ├── pages/
-│   │   ├── layouts/
-│   │   ├── services/
-│   │   ├── context/
-│   │   ├── hooks/
-│   │   └── App.jsx
-│   └── package.json
-│
+store automation/
 ├── backend/
-│   ├── config/
-│   ├── controllers/
-│   ├── middleware/
-│   ├── models/
-│   ├── routes/
-│   ├── scripts/
-│   ├── server.js
-│   └── package.json
-│
-├── database/
-│   └── schema.sql
-│
-└── README.md
+│   ├── .env
+│   ├── .env.example
+│   ├── package.json
+│   └── src/
+│       ├── app.js
+│       ├── server.js
+│       ├── config/
+│       ├── controllers/
+│       ├── db/
+│       │   ├── init.js
+│       │   ├── schema.sql
+│       │   └── seed.js
+│       ├── middleware/
+│       ├── routes/
+│       └── utils/
+└── frontend/
+    ├── index.html
+    ├── package.json
+    ├── vite.config.js
+    └── src/
+        ├── App.jsx
+        ├── main.jsx
+        ├── index.css
+        ├── components/
+        ├── context/
+        ├── pages/
+        └── services/
 ```
-
-*Note: This is the recommended structure; adjust it to match the actual repository.*
 
 ---
 
-## ⚙️ Installation & Setup
+## Installation & Setup
 
 ### Prerequisites
+- Node.js (v18+ recommended; tested on v24.16.0)
+- PostgreSQL (tested on PostgreSQL 18)
 
-Make sure the following tools are installed:
+### 1. Configure Environment Variables
+Copy `backend/.env.example` to `backend/.env` and update your PostgreSQL credentials and JWT secret:
 
-- Node.js
-- npm
-- PostgreSQL
-- Git
+```env
+PORT=5000
+NODE_ENV=development
+CLIENT_URL=http://localhost:5173
 
-### 1. Clone the Repository
+DB_HOST=127.0.0.1
+DB_PORT=5432
+DB_NAME=store_automation
+DB_USER=postgres
+DB_PASSWORD=your_postgres_password
 
-```bash
-git clone YOUR_GITHUB_REPOSITORY_URL
+JWT_SECRET=your_secure_jwt_secret
+JWT_EXPIRES_IN=1d
+
+SHOW_DEMO_CREDENTIALS=true
+DEMO_ADMIN_USERNAME=admin
+DEMO_ADMIN_PASSWORD=Admin@123
+DEMO_STUDENT_USERNAME=student
+DEMO_STUDENT_PASSWORD=Student@123
 ```
 
-```bash
-cd Store-Automation
-```
-
-### 2. Backend Setup
+### 2. Install Dependencies
 
 ```bash
 cd backend
 npm install
-```
 
-Create a `.env` file inside the backend directory:
-
-```env
-PORT=5000
-DATABASE_URL=postgresql://postgres:YOUR_PASSWORD@localhost:5432/store_automation
-JWT_SECRET=your_secure_secret_key
-```
-
-Configure the database credentials according to your PostgreSQL setup.
-
-### 3. Database Setup
-
-Create a PostgreSQL database:
-
-```sql
-CREATE DATABASE store_automation;
-```
-
-Run the database schema or migrations provided in the project.
-
-Initialize demo accounts using the backend seed script, if configured.
-
-### 4. Start Backend Server
-
-```bash
-npm run dev
-```
-
-Backend API:
-
-```text
-http://localhost:5000
-```
-
-### 5. Frontend Setup
-
-Open another terminal:
-
-```bash
-cd frontend
+cd ../frontend
 npm install
 ```
 
-Start the frontend development server:
+### 3. Initialize & Seed Database
+The backend automatically initializes and seeds the database on startup if empty. You can also run the scripts manually:
 
 ```bash
+cd backend
+npm run db:init
+npm run db:seed
+```
+
+To reset and re-seed all tables from scratch:
+
+```bash
+cd backend
+node src/db/seed.js --force
+```
+
+---
+
+## Running the Application
+
+Start the **Backend** server (port `5000`):
+
+```bash
+cd backend
 npm run dev
 ```
 
-Frontend application:
+Start the **Frontend** development server (port `5173`):
 
-```text
-http://localhost:5173
+```bash
+cd frontend
+npm run dev
 ```
 
----
-
-## 🔄 Application Workflow
-
-1. User opens the Store Automation website.
-2. User logs in using Admin or Student credentials.
-3. The system verifies credentials and assigned permissions.
-4. User accesses the appropriate dashboard.
-5. Admin manages products, inventory, customers, and suppliers.
-6. Sales transactions are recorded in the database.
-7. Inventory is automatically updated after successful sales.
-8. Dashboard statistics and reports reflect updated records.
+Open `http://localhost:5173` in your browser.
 
 ---
 
-## 🗄️ Database Modules
+## Demo Login Credentials
 
-The application uses PostgreSQL for relational data management.
+Initialized via the backend seed script (`backend/src/db/seed.js`):
 
-Major database entities include:
+| Role | Username | Password |
+| :--- | :--- | :--- |
+| **Admin** | `admin` | `Admin@123` |
+| **Student** | `student` | `Student@123` |
 
-- Users
-- Products
-- Categories
-- Inventory
-- Sales
-- Sale Items
-- Customers
-- Suppliers
-- Stock Movements
-
-Primary keys, foreign keys, and relational constraints help maintain data consistency.
-
----
-
-## 🎯 Project Objectives
-
-- Develop a practical Full Stack Web Application.
-- Automate essential retail store operations.
-- Implement database connectivity using PostgreSQL.
-- Understand REST API development.
-- Implement authentication and role-based authorization.
-- Develop responsive and reusable UI components.
-- Apply CRUD operations in a real-world application.
-- Improve inventory tracking and sales management.
-
----
-
-## 👨‍💻 Development Team
-
-**Full Stack Development Team**
-
-| Role | Name |
-|---|---|
-| Team Leader | Chirag Kumar |
-| Team Member | Dev Malik |
-
-**Institution:** ABES Engineering College (ABESEC), Ghaziabad
-
-**Department:** [Add Branch and Section]
-
----
-
-## 🚀 Future Enhancements
-
-- Barcode and QR code scanning.
-- Advanced demand forecasting.
-- Automated purchase order generation.
-- Email notifications for low inventory.
-- PDF invoice generation.
-- Advanced business intelligence.
-- Cloud deployment and backup.
-
----
-
-## 📜 License
-
-This project has been developed for academic purposes as part of the Full Stack Development curriculum at ABESEC Ghaziabad.
-
----
-
-<p align="center">
-  **Store Automation System**
-  <br/>
-  Developed & Maintained By: Chirag Kumar and Dev Malik
-  <br/>
-  Full Stack Development Team
-  <br/><br/>
-  © 2026 ABESEC Ghaziabad. All Rights Reserved.
-</p>
+You can change passwords anytime from **Settings → Change Password** or via **Users** (Admin only).
