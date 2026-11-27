@@ -27,13 +27,15 @@ const poolConfig = process.env.DATABASE_URL
       connectionTimeoutMillis: 10000,
     };
 
-console.log(
-  "Database configuration:",
-  process.env.DATABASE_URL
-    ? "Using Render DATABASE_URL"
-    : "Using LOCAL database fallback",
-);
+console.log("Database configuration: Using Render DATABASE_URL");
 
+try {
+  const dbUrl = new URL(process.env.DATABASE_URL);
+  console.log("Database host:", dbUrl.hostname);
+  console.log("Database port:", dbUrl.port || "5432");
+} catch {
+  console.error("DATABASE_URL is not a valid URL");
+}
 export const pool = new Pool(poolConfig);
 
 pool.on("error", (err) => {
